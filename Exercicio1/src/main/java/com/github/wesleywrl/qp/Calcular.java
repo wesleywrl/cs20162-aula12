@@ -15,7 +15,7 @@ import java.util.Map;
  * Utiliza o Parser a ser testado para o cálculo de expressões matemáticas com
  * ou sem variáveis.
  *
- * @author Wesleywrl
+ * @author Wesley Ramos
  */
 public final class Calcular {
 
