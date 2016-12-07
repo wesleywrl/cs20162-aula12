@@ -1,9 +1,7 @@
-
 /*
  * Copyright (c) 2016. Fábrica de Software - Instituto de Informática (UFG)
  * Creative Commons Attribution 4.0 International License.
  */
-
 package com.github.wesleywrl.qp;
 
 import com.github.kyriosdata.parser.Lexer;
@@ -14,18 +12,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Utiliza o Parser a ser testado para o cálculo de expressões matemáticas com
+ * ou sem variáveis.
+ *
  * @author Wesleywrl
  */
 public final class Calcular {
 
-    public Calcular() {
+    /**
+     * Impede instancialização de classe utilitária.
+     */
+    private Calcular() {
     }
 
     /**
-     * O Parser usará o valor de uma expressão matemática;
-     * @param teste Teste a ser analisado.
-     * @return o resultado do teste.
-     * @throws Exception: expressão inválida.
+     * Usa o Parser o valor de uma expressão matemática, com base nos valores
+     * das variáveis fornecidas (no formato "x=1" separadas por vírgula).
+     *
+     * @param teste Teste a ser analisado (deve possuir expressão e talvez
+     * variáveis).
+     * @return Resultado da expressão contida no teste fornecido, com base em
+     * suas variáveis.
+     * @throws Exception Quando a expressão é inválida.
      */
     public static float resultadoExpressao(final Teste teste)
             throws Exception {

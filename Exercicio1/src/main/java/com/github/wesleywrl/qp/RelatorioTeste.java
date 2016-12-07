@@ -66,9 +66,9 @@ public class RelatorioTeste {
         //valor esperado). Este processo é antes da medição de tempo e memória
         //pois não é de responsabilidade do Parser. Isto se dá pois o Parser só
         //deve receber a expressão e as variáveis já separadas.
-        linhasTestes.stream().forEach((linha) -> {
+        for (String linha : linhasTestes) {
             testes.add(new Teste(linha));
-        });
+        }
         this.gerarHtml = html;
     }
 
@@ -83,7 +83,7 @@ public class RelatorioTeste {
      * @throws java.io.IOException Quando não for possível guardar o arquivo no
      * diretório fornecido.
      */
-    public final void gerarRelatorio(final String diretorio)
+    public final void gerarRelatorioTeste(final String diretorio)
             throws IOException {
 
         //Obtém tempo e memória iniciais
@@ -104,9 +104,9 @@ public class RelatorioTeste {
         memoriaConsumida = memFinal - memInicio;
 
         //Atualiza a condição de sucesso dos testes
-        testes.stream().forEach((teste) -> {
+        for (Teste teste : testes) {
             teste.atualizarSucesso();
-        });
+        }
 
         //Finalmente, gera o arquivo com o relatório dos testes
         gerarArquivo(diretorio);
@@ -117,9 +117,9 @@ public class RelatorioTeste {
      * destrinchados) e guarda o resultado de cada uma.
      */
     private void realizarExpressoes() {
-        testes.stream().forEach((teste) -> {
+        for (Teste teste : testes) {
             teste.calcularValor();
-        });
+        }
     }
 
     /**
@@ -164,8 +164,11 @@ public class RelatorioTeste {
         //Informações gerais
         int totTestes = testes.size();
         int failTestes = 0;
-        failTestes = testes.stream().filter((teste) -> (!teste.getSucesso())).
-                     map((_item) -> 1).reduce(failTestes, Integer::sum);
+        for (Teste teste : testes) {
+            if (!teste.getSucesso()) {
+                failTestes++;
+            }
+        }
         float failRate = (float) failTestes / (float) totTestes;
         arquivo.add("<h2>Informações gerais</h2>");
         arquivo.add("<p><b>Testes executados:</b> " + totTestes + " testes.");
@@ -195,22 +198,14 @@ public class RelatorioTeste {
         arquivo.add("<th><b>Obtido</b></th>");
         arquivo.add("<th><b>Sucesso</b></th>");
         arquivo.add("</tr>");
-        testes.stream().map((teste) -> {
+        for (Teste teste : testes) {
             arquivo.add("<tr>");
             arquivo.add("<td>" + teste.getExpressao() + "</td>");
-            return teste;
-        }).map((teste) -> {
             arquivo.add("<td>" + teste.getVariaveis() + "</td>");
-            return teste;
-        }).map((teste) -> {
             arquivo.add("<td>" + String.format("%.4f", teste.getEsperado())
                     + "</td>");
-            return teste;
-        }).map((teste) -> {
             arquivo.add("<td>" + String.format("%.4f", teste.getObtido())
                     + "</td>");
-            return teste;
-        }).map((teste) -> {
             if (teste.getSucesso()) {
                 arquivo.add("<td><span style=\"color:#00FF00\">SIM</span>"
                         + "</td>");
@@ -218,10 +213,8 @@ public class RelatorioTeste {
                 arquivo.add("<td><span style=\"color:#FF0000\">NÃO</span>"
                         + "</td>");
             }
-            return teste;
-        }).forEach((_item) -> {
             arquivo.add("</tr>");
-        });
+        }
         arquivo.add("</table>");
         arquivo.add("");
         if (todosSucessos()) {
@@ -254,8 +247,11 @@ public class RelatorioTeste {
         //Informações gerais
         int totTestes = testes.size();
         int failTestes = 0;
-        failTestes = testes.stream().filter((teste) -> (!teste.getSucesso())).
-                     map((_item) -> 1).reduce(failTestes, Integer::sum);
+        for (Teste teste : testes) {
+            if (!teste.getSucesso()) {
+                failTestes++;
+            }
+        }
         arquivo.add("{");
         arquivo.add("    \"testesTotais\":" + totTestes + ",");
         arquivo.add("    \"testesFalhos\":" + failTestes + ",");
@@ -265,7 +261,7 @@ public class RelatorioTeste {
 
         //Testes
         arquivo.add("    \"testes\":[");
-        testes.stream().forEach((Teste teste) -> {
+        for (Teste teste : testes) {
             String virgula = ",";
             if (testes.indexOf(teste) == testes.size() - 1) {
                 virgula = "";
@@ -287,14 +283,14 @@ public class RelatorioTeste {
                     arquivo.add("                }" + virgulaVar);
                 }
                 arquivo.add("            ],");
-                
+
             }
             arquivo.add("            \"esperado\":" + teste.getEsperado()
                     + ",");
             arquivo.add("            \"obtido\":" + teste.getObtido() + ",");
             arquivo.add("            \"sucesso\":" + teste.getSucesso());
             arquivo.add("        }" + virgula);
-        });
+        }
         arquivo.add("    ]");
         arquivo.add("}");
 
@@ -310,7 +306,13 @@ public class RelatorioTeste {
      * @return Falso se pelo menos um teste tiver dado errado.
      */
     public final boolean todosSucessos() {
-        return testes.stream().noneMatch((teste) -> (!teste.getSucesso()));
+        for (Teste teste : testes) {
+            if (!teste.getSucesso()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
+

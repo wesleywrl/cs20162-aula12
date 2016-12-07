@@ -12,31 +12,39 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 /**
- * Lógica principal do programa .
+ * Lógica principal do programa com base nos parâmetros fornecidos.
  *
- * @author wesleywrl
+ * @author Wesleywrl
  */
 public final class Main {
 
+    /**
+     * Impede instancialização de classe utilitária.
+     */
     private Main() {
     }
 
     /**
-     * Lógica principal do programa. Verifica os parâmetros fornecidos;
-     * @param args Parâmetros. O primeiro parâmetro: local do arquivo
-     * TXT de testes, local ou remoto. O segundo parâmetro deve ser "-h" 
+     * Lógica principal do programa. Verifica os parâmetros fornecidos, obtém o
+     * arquivo de testes, executa o teste das expressões do arquivo de teste e
+     * gera o relatório no formato escolhido.
+     *
+     * @param args Parâmetros. O primeiro parâmetro deve ser o local do arquivo
+     * TXT de testes, podendo ser local ou remoto. O segundo parâmetro é
+     * opcional, mas caso fornecido, deve ser "-h" e indica geração de relatório
+     * HTML e não JSON. Outros parâmetros não são aceitos.
      */
     public static void main(final String[] args) {
         boolean exportHtml = false;
         boolean localFile = true;
         List<String> testes = null;
 
-        //Verifica a quantidade de parâmetros 
+        //Checa quantidade de parâmetros (deve ser 1 ou 2)
         if (args.length != 1 && args.length != 2) {
             erro("Quantidade de parâmetros inválida.");
         }
 
-        //Verifica o segundo parâmetro (deve ser "-h")
+        //Checa o segundo parâmetro (só pode ser "-h")
         if (args.length == 2) {
             if (args[1].equals("-h")) {
                 exportHtml = true;
@@ -45,13 +53,13 @@ public final class Main {
             }
         }
 
-        //Verifica se é local ou remoto
+        //Checa se é local ou remoto
         if (args[0].startsWith("http")) {
             System.out.println("O arquivo de testes será obtido remotamente.");
             localFile = false;
         }
 
-        //Adquire o arquivo
+        //Obtém o arquivo
         System.out.println("Obtendo arquivo de testes...");
         try {
             testes = Ler.obterLinhas(args[0], localFile);
@@ -79,7 +87,7 @@ public final class Main {
         System.out.println("Realizando expressões matemáticas...");
         RelatorioTeste gerador = new RelatorioTeste(testes, exportHtml);
         try {
-            gerador.gerarRelatorio(diretorioQp);
+            gerador.gerarRelatorioTeste(diretorioQp);
         } catch (IOException ex) {
             erro("Não foi possível gerar arquivo de relatório.");
         }
@@ -87,7 +95,7 @@ public final class Main {
         if (gerador.todosSucessos()) {
             System.out.println("Todos os testes obtiveram SUCESSO.");
         } else {
-            System.out.println("Alguns testes  FALHARAM.");
+            System.out.println("Houveram testes que FALHARAM.");
         }
         if (exportHtml) {
             System.out.println("Relatório HTML salvo em \"" + diretorioQp

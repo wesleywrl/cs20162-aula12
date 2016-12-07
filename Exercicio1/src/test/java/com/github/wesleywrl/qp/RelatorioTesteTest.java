@@ -39,7 +39,7 @@ public class RelatorioTesteTest {
         //gera o relatorio
         List<String> linhas = testeArq;
         RelatorioTeste relat = new RelatorioTeste(linhas, true);
-        relat.gerarRelatorio(diretorio);
+        relat.gerarRelatorioTeste(diretorio);
 
         //Deleta os arquivos gerados
         file = Paths.get(diretorio + "/relatorio.html");
@@ -64,7 +64,7 @@ public class RelatorioTesteTest {
         //gera o relatorio
         List<String> linhas = testeArq;
         RelatorioTeste relat = new RelatorioTeste(linhas, false);
-        relat.gerarRelatorio(diretorio);
+        relat.gerarRelatorioTeste(diretorio);
 
         //Deleta os arquivos gerados
         file = Paths.get(diretorio + "/relatorio.json");

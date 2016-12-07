@@ -16,19 +16,23 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Obtem o arquivo com os testes.
+ * Permite obter o arquivo com os testes, remotamente ou localmente.
  *
- * @author wesleywrl
+ * @author Wesleywrl
  */
 public final class Ler {
 
+    /**
+     * Impede instancialização de classe utilitária.
+     */
     private Ler() {
     }
 
     /**
-     * Obtem um arquivo de texto
+     * Tenta obter o conteúdo de um arquivo de texto no computador ou em um
+     * servidor.
      *
-     * @param path local em que o arquivo será obtido.
+     * @param path Local do arquivo a ser obtido, local ou remoto (http).
      * @param local Se falso, o arquivo será obtido de um servidor remoto via
      * internet. Se verdade, o arquivo está no computador do usuário.
      * @return Lista com as linhas do arquivo obtido.
@@ -49,10 +53,10 @@ public final class Ler {
     }
 
     /**
-     * Acessa uma URL e retorna as linhas do arquivo.
+     * Acessa uma URL e retorna as linhas do arquivo acessado.
      *
      * @param urlPath Endereço URL do arquivo a ser obtido.
-     * @return As linhas do arquivo acessado.
+     * @return Todas as linhas do arquivo acessado.
      * @throws MalformedURLException Quando a URL inserida for inválida.
      * @throws IOException Quando não for possível conectar-se ao servidor.
      */
@@ -78,8 +82,8 @@ public final class Ler {
      * Acessa um arquivo local e retorna as linhas do arquivo.
      *
      * @param path Diretório do arquivo local.
-     * @return As linhas do arquivo acessado.
-     * @throws FileNotFoundException Quando o arquivo não for encontrado.
+     * @return Todas as linhas do arquivo acessado.
+     * @throws FileNotFoundException Quando o arquivo não existir.
      */
     private static List<String> obterLinhasLocal(final String path)
             throws FileNotFoundException {
